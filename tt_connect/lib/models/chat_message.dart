@@ -1,4 +1,5 @@
 class ChatMessage {
+  final String roomId;
   final String messageId;
   final String senderId;
   final String senderName;
@@ -8,6 +9,7 @@ class ChatMessage {
   final String messageType;
 
   ChatMessage({
+    required this.roomId,
     required this.messageId,
     required this.senderId,
     required this.senderName,
@@ -19,6 +21,7 @@ class ChatMessage {
 
   factory ChatMessage.fromJson(Map<String, dynamic> json) {
     return ChatMessage(
+      roomId: json['roomId'],
       messageId: json['messageId'],
       senderId: json['senderId'],
       senderName: json['senderName'],
@@ -31,6 +34,7 @@ class ChatMessage {
 
   Map<String, dynamic> toJson() {
     return {
+      'roomId': roomId,
       'messageId': messageId,
       'senderId': senderId,
       'senderName': senderName,

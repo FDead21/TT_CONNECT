@@ -25,7 +25,7 @@ class ApiService {
     return headers;
   }
 
-  static Future<Map<String, String>> _getAuthHeaders() async {
+  static Future<Map<String, String>> getAuthHeaders() async {
     final token = await getToken();
     return {
       'Content-Type': 'application/json',
@@ -46,7 +46,7 @@ class ApiService {
   }
 
   static Future<http.Response> getUserProfile(String empId) async {
-    final headers = await _getAuthHeaders();
+    final headers = await getAuthHeaders();
     final response = await http.get(
       Uri.parse('$baseUrl/users/$empId'),
       headers: headers,

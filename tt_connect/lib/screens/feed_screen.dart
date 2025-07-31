@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 import 'dart:convert';
 import '../models/post.dart';
 import '../services/api_service.dart';
@@ -39,7 +40,7 @@ class _FeedScreenState extends State<FeedScreen> {
     });
 
     try {
-      final headers = await ApiService._getAuthHeaders();
+      final headers = await ApiService.getAuthHeaders();
       final response = await http.get(
         Uri.parse('${ApiService.baseUrl}/posts/feed?page=1&limit=10'),
         headers: headers,
@@ -112,7 +113,7 @@ class _FeedScreenState extends State<FeedScreen> {
 
   Future<void> _toggleLike(String postId) async {
     try {
-      final headers = await ApiService._getAuthHeaders();
+      final headers = await ApiService.getAuthHeaders();
       final response = await http.post(
         Uri.parse('${ApiService.baseUrl}/posts/$postId/like'),
         headers: headers,
@@ -149,4 +150,47 @@ class _FeedScreenState extends State<FeedScreen> {
     _scrollController.dispose();
     super.dispose();
   }
+
+  Future<void> _loadMorePosts() async {
+  // Don't load more if we are already loading or if there are no more posts
+  if (_isLoading || !_hasMore) return;
+
+  setState(() {
+    _isLoading = true;
+  });
+
+  // Increment the page number to fetch the next page
+  _currentPage++;
+
+  try {
+    final headers = await ApiService.getAuthHeaders();
+    // Use the current page number in the API call
+    final response = await http.get(
+      Uri.parse('${ApiService.baseUrl}/posts/feed?page=$_currentPage&limit=10'),
+      headers: headers,
+    );
+
+    if (response.statusCode == 200) {
+      final data = jsonDecode(response.body);
+      final newPosts = (data['posts'] as List)
+          .map((postJson) => Post.fromJson(postJson))
+          .toList();
+      
+      setState(() {
+        // Add the new posts to the existing list
+        _posts.addAll(newPosts);
+        _hasMore = data['hasMore'];
+      });
+    }
+  } catch (error) {
+    print('Error loading more posts: $error');
+    // Optional: Decrement page on error to retry
+    _currentPage--;
+  } finally {
+    setState(() {
+      _isLoading = false;
+    });
+  }
 }
+}
+

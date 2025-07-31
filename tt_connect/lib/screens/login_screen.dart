@@ -4,7 +4,6 @@ import 'dart:convert';
 import 'package:provider/provider.dart';
 import '../services/auth_provider.dart';
 import 'profile_screen.dart';
-import 'home_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});

@@ -77,7 +77,7 @@ class _ChatScreenState extends State<ChatScreen> {
     });
 
     try {
-      final headers = await ApiService._getAuthHeaders();
+      final headers = await ApiService.getAuthHeaders();
       final response = await http.get(
         Uri.parse('${ApiService.baseUrl}/chat/rooms/${widget.roomId}/messages'),
         headers: headers,

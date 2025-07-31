@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:provider/provider.dart';
+import 'package:tt_connect/models/post.dart';
 import 'package:tt_connect/screens/login_screen.dart';
 import 'package:tt_connect/services/auth_provider.dart';
+import 'package:tt_connect/widgets/post_widget.dart';
 
 void main() {
   group('Login Screen Tests', () {
@@ -42,7 +44,7 @@ void main() {
     });
   });
 
-  group('Post Widget Tests', () => {
+  group('Post Widget Tests', () {
     testWidgets('Should display post content correctly', (WidgetTester tester) async {
       final testPost = Post(
         postId: '1',

@@ -25,7 +25,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
     });
 
     try {
-      final headers = await ApiService._getAuthHeaders();
+      final headers = await ApiService.getAuthHeaders();
       final response = await http.post(
         Uri.parse('${ApiService.baseUrl}/posts'),
         headers: headers,
